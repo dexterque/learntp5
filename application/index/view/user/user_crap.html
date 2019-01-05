@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {load href="/static/js/jquery-3.3.1.min.js" /}
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    {load href="/static/js/easytimer.min.js" /}
+</head>
+<body>
+<div class="jumbotron">
+    <h1>用户投注</h1>
+    <p>第{$journal_id}期</p>
+
+    <div id="countdownExample">
+        <div class="values"></div>
+    </div>
+</div>
+</body>
+
+<script>
+
+    // var now_time = 0;
+    //
+    // $.post( "getServerTime", function( data ) {
+    //     now_time = data.now_time;
+    //
+    // }, 'json');
+    // var flag = [];
+    //
+    // setInterval(function () {
+    //     // 请求未开奖的一期
+    //     $.post("http://www.bi8_game.net/index.php/index/User/getJournalNotOpen", function (data) {
+    //         var i = new Date().getMinutes();
+    //         var s = new Date().getSeconds();
+    //         var journal_id = data;
+    //         console.log(journal_id);
+    //         if (i % 5 === 4 &&  s > 55 && flag[s] === undefined) {
+    //             // 请求开奖结果
+    //             // 倒计时产生中奖号码
+    //             flag[s] = 1;
+    //             console.log(journal_id);
+    //             $.post("http://www.bi8_game.net/index.php/index/lottery/getLotteryNumber", {journal_id: journal_id}, function (data) {
+    //                 console.log(data);
+    //                 console.log('倒计时5个数');
+    //             });
+    //
+    //         } else {
+    //             delete flag[s];
+    //         }
+    //     });
+    // }, 1000);
+
+    (function ($, exports) {
+        exports.app = {
+            init: function () {
+                this.getLatestJournal();
+            },
+            // 查询最新一期的信息
+            getLatestJournal: function () {
+                const url = "http://www.bi8_game.net/index.php/index/lottery/getLatestJournal";
+                const data = {};
+                $.ajax({
+                    url: url,
+                    data: data,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function (data) {
+
+                    },
+                    fail: function () {
+                        
+                    }
+                });
+            },
+            // 设置定时器
+            setTimer: setInterval(function () {
+
+            }, 1000),
+            // 倒计时
+            counter: function () {
+                
+            }
+        };
+    })(jQuery, window);
+
+
+    app.init();
+
+    // 距离开奖还有多少时间，倒计时
+    var timer = new Timer();
+
+    timer.start({countdown: true, startValues: {seconds: 10}});
+    $('#countdownExample .values').html(timer.getTimeValues().toString());
+    timer.addEventListener('secondsUpdated', function (e) {
+        $('#countdownExample .values').html(timer.getTimeValues().toString());
+    });
+    timer.addEventListener('targetAchieved', function (e) {
+        // 查询最新的
+        $('#countdownExample .values').html('开奖结果是!!');
+    });
+
+</script>
+</html>
