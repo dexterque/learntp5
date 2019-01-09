@@ -1,11 +1,13 @@
 <?php
 namespace app\demo\controller;
+use think\Controller;
 
-class Index
+class Index extends Controller
 {
     public function index($name = 'haha')
     {
-    	return 'hello' . $name;
+    	$this->assign('name', $name);
+    	return $this->fetch();
     }
 
     public function test(){
@@ -17,6 +19,6 @@ class Index
     }
 
     private function hello3(){
-		
+
     }
 }
